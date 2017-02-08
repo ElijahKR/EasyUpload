@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        #fileupload {
+            display: none;
+        }
+
+        .progress-item {
+            width: 880px;
+            text-align: center;
+            clear: both;
+            padding-top:8px;
+        }
+
+        .progress-box {
+            width: 800px;
+            height: 23px;
+            background-color: white;
+            outline: #ccc solid thin;
+            float: left;
+        }
+
+        .progress-op {
+            float: left;
+        }
+
+        .progress {
+            width: 0%;
+            height: 23px;
+            background-color: lightgreen;
+            outline: #ccc solid thin;
+        }
+
+        .progress-text {
+            text-align: left;
+            position: absolute;
+            z-index: 10;
+            color: gray;
+            padding-left:8px;
+            padding-top:3px;
+        }
+
+        .template-div{
+            display:none;
+        }
+    </style>
+
+    <script type="text/javascript" src="jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="upload-async.js"></script>
+    <script type="text/javascript" src="multifiles-upload-async.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var container = $('#container');
+            var template = $('.template-div').html();
+
+            var uploads = new multiupload({
+				//todo: specify the url
+                url: '/Upload.ashx',
+                start: function (data) {
+                    //ui
+                    var currProgress = $(template);
+                    currProgress.attr('index', data.index);
+                    currProgress.attr('key', data.key);
+                    container.append(currProgress);
+                    currProgress.show('slow');
+
+                    //ui value
+                    setProgress(data.index, data.key, '0.00%', data.name);
+
+                    //cancel event
+                    currProgress.find('.btn-cancel').click(function () {
+                        uploads.cancel(data.index, data.key);
+                    });
+
+                    //pause
+                    currProgress.find('.btn-pause').click(function () {
+                        uploads.pause(data.index, data.key);
+                    });
+
+                    //continue
+                    currProgress.find('.btn-continue').click(function () {
+                        uploads.continue(data.index, data.key);
+                    });
+                },
+                cancel: function (data) {
+                    setProgress(data.index, data.key, '0.00%', data.name);
+
+                    var progressItem = container.find('.progress-item').filter('[index="' + data.index + '"]').filter('[key="' + data.key + '"]');
+                    progressItem.hide('slow', function () {
+                        progressItem.remove();
+                    })
+                },
+                process: function (data) {
+                    setProgress(data.index, data.key, data.data.percent, data.name);
+                },
+                success: function (data) {
+                    setProgress(data.index, data.key, '100.00%', data.name + ' - success');
+                },
+                error: function (data) {
+                    setProgress(data.index, data.key, '100.00%', data.msg + ' - error');
+                },
+                complete: function () {
+                    //write you code
+                },
+                pause: function (data) {
+
+                },
+                continue: function (data) {
+
+                }
+            });
+
+            function setProgress(index, key, percent, name) {
+                var per = String(percent) + '%';
+
+                var progressItem = container.find('.progress-item').filter('[index="' + index + '"]').filter('[key="' + key + '"]');
+                var progressBar = progressItem.find('.progress');
+                var progressPer = progressItem.find('.progress-per');
+                var progressName = progressItem.find('.progress-name');
+
+                progressBar.css({ 'width': per });
+                progressPer.text(per);
+                progressName.text(name);
+            }
+
+            var btnUpload = $('#upload');
+            btnUpload.click(function () {
+                uploads.upload();
+            });
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <button id="upload">upload</button>
+    <br />
+    <br />
+    <div id="container">
+
+    </div>
+    <br />
+    <div class="template-div">
+        <div class="progress-item">
+            <div class="progress-box">
+                <div class="progress-text">
+                    <span class="progress-per">0.00%</span>
+                    <span>&nbsp;-&nbsp;</span>
+                    <span class="progress-name">0.00%</span>
+                </div>
+                <div class="progress">
+                </div>
+            </div>
+            <div class="progress-op">
+                <input type="button" class="btn-pause" value="pause" />
+                <input type="button" class="btn-continue" value="continue" />
+                <input type="button" class="btn-cancel" value="cancel" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
