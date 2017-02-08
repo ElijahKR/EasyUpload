@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        #fileupload {
+            display: none;
+        }
+
+        .progress-div {
+            text-align: left;
+            width: 500px;
+            height: 20px;
+            background-color: white;
+            outline: #ccc solid thin;
+        }
+
+        .progress {
+            width: 0%;
+            height: 20px;
+            background-color: green;
+            outline: #ccc solid thin;
+        }
+
+        #progress-text {
+            position: absolute;
+            z-index: 10;
+            margin-left: 240px;
+            color: lime;
+        }
+    </style>
+
+    <script type="text/javascript" src="jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="upload-async.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var btnUpload = $('#upload');
+            var btnCancel = $('#cancel');
+            var btnPause = $('#pause');
+            var btnContinue = $('#continue');
+            var fileupload = $('#fileupload');
+            var progress = $('.progress');
+            var progresstxt = $('#progress-text');
+
+            // init
+            BtnDisabled(true);
+
+            var currUpload;
+
+            btnUpload.click(function () {
+                fileupload.click();
+            });
+
+            btnPause.click(function () {
+                PausedDisabled(true);
+                currUpload.pause();
+            });
+
+            btnContinue.click(function () {
+                PausedDisabled(false);
+                currUpload.continue();
+            });
+
+            btnCancel.click(function () {
+                currUpload.cancel();
+            });
+
+            fileupload.change(function () {
+                PausedDisabled(false);
+
+                var file = this.files[0];
+                currUpload = new upload({
+					//todo: specify the url
+                    url: '/Upload.ashx',
+                    file: file
+                });
+
+                currUpload.start(function () {
+                    UploadDisabled(true);
+                    progress.css({ 'width': '0%' });
+                    progresstxt.text('0.00%');
+                });
+
+                currUpload.cancel(function () {
+                    BtnDisabled(true);
+                    progress.css({ 'width': '0%' });
+                    progresstxt.text('0.00%');
+                });
+
+                currUpload.process(function (ev, data) {
+                    var per = String(data.percent) + '%';
+                    progress.css({ 'width': per });
+                    progresstxt.text(per);
+                });
+
+                currUpload.success(function () {
+                    //write your code
+                });
+
+                currUpload.error(function (ev, data) {
+                    alert(data.msg);
+                });
+
+                currUpload.complete(function () {
+                    UploadDisabled(false);
+                    BtnDisabled(true);
+                });
+
+                currUpload.pause(function () {
+
+                });
+
+                currUpload.continue(function () {
+
+                });
+
+                //start
+                currUpload.start();
+            });
+
+            function BtnDisabled(flag) {
+                btnPause.prop('disabled', flag);
+                btnContinue.prop('disabled', flag);
+                btnCancel.prop('disabled', flag);
+            }
+
+            function PausedDisabled(flag) {
+                btnPause.prop('disabled', flag);
+                btnContinue.prop('disabled', !flag);
+            }
+
+            function UploadDisabled(flag) {
+                btnUpload.prop('disabled', flag);
+                btnCancel.prop('disabled', !flag);
+            }
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <button id="upload">upload</button>
+    <button id="pause">pause</button>
+    <button id="continue">continue</button>
+    <button id="cancel">cancel</button>
+    <input id="fileupload" type="file" />
+    <br />
+    <br />
+    <div class="progress-div">
+        <span id="progress-text">0.00%</span>
+        <div class="progress">
+        </div>
+    </div>
+</body>
+</html>
