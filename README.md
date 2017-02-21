@@ -29,7 +29,7 @@ For instance:
 <p>
 <strong>.cancel(callback)</strong>
 <br />
-<i>callback</i> will be triggered before canceling.
+<i>callback</i> will be triggered before canceling. e.g.
 <code><pre>up.cancel(function () {
                 // do some stuff
             });</pre></code>
@@ -38,7 +38,7 @@ For instance:
 <p>
 <strong>.process(callback)</strong>
 <br />
-<i>callback</i> will be triggered while processing.
+<i>callback</i> will be triggered while processing. e.g.
 <code><pre>up.process(function (ev, data) {   // data: {percent: '', name: ''}
                 // do some stuff
                 var per = String(data.percent) + '%';
@@ -48,7 +48,7 @@ For instance:
 <p>
 <strong>.pause(callback)</strong>
 <br />
-<i>callback</i> will be triggered before pausing.
+<i>callback</i> will be triggered before pausing. e.g.
 <code><pre>up.pause(function () {
                 // do some stuff
             });</pre></code>
@@ -57,7 +57,7 @@ For instance:
 <p>
 <strong>.continue(callback)</strong>
 <br />
-<i>callback</i> will be triggered before continuing.
+<i>callback</i> will be triggered before continuing. e.g.
 <code><pre>up.continue(function () {
                 // do some stuff
             });</pre></code>
@@ -66,7 +66,7 @@ For instance:
 <p>
 <strong>.complete(callback)</strong>
 <br />
-<i>callback</i> will be triggered after all stuff done.
+<i>callback</i> will be triggered after all stuff done. e.g.
 <code><pre>up.complete(function () {
                 // do some stuff
             });</pre></code>
@@ -75,7 +75,7 @@ For instance:
 <p>
 <strong>.error(callback)</strong>
 <br />
-<i>callback</i> will be triggered while errors occuring.
+<i>callback</i> will be triggered while errors occuring. e.g.
 <code><pre>up.error(function (ev, data) {   // data: {percent: '', name: '', msg: ''}
                 // do some stuff
                 alert(data.msg);
