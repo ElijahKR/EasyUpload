@@ -30,34 +30,54 @@ For instance:
 <strong>.cancel(callback)</strong>
 <br />
 <i>callback</i> will be triggered before canceling.
+<code><pre>up.cancel(function () {
+                // do some stuff
+            });</pre></code>
 </p>
 
 <p>
 <strong>.process(callback)</strong>
 <br />
 <i>callback</i> will be triggered while processing.
+<code><pre>up.process(function (ev, data) {   // data: {percent: '', name: ''}
+                // do some stuff
+                var per = String(data.percent) + '%';
+            });</pre></code>
 </p>
 
 <p>
 <strong>.pause(callback)</strong>
 <br />
 <i>callback</i> will be triggered before pausing.
+<code><pre>up.pause(function () {
+                // do some stuff
+            });</pre></code>
 </p>
 
 <p>
 <strong>.continue(callback)</strong>
 <br />
 <i>callback</i> will be triggered before continuing.
+<code><pre>up.continue(function () {
+                // do some stuff
+            });</pre></code>
 </p>
 
 <p>
 <strong>.complete(callback)</strong>
 <br />
-<i>callback</i> will be triggered before completing.
+<i>callback</i> will be triggered after all stuff done.
+<code><pre>up.complete(function () {
+                // do some stuff
+            });</pre></code>
 </p>
 
 <p>
 <strong>.error(callback)</strong>
 <br />
-<i>callback</i> will be triggered before error occuring.
+<i>callback</i> will be triggered while errors occuring.
+<code><pre>up.error(function (ev, data) {   // data: {percent: '', name: '', msg: ''}
+                // do some stuff
+                alert(data.msg);
+            });</pre></code>
 </p>
