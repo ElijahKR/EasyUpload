@@ -84,3 +84,6 @@ For instance:
 
 <h2>Multifile</h2>
 <p>Multifile is based on <strong><i>upload</i></strong> and provides the functionality to upload multifile file asynchronously.</p>
+
+<br />
+<p>If you have any question, please contact <a href="mailto:Elijah_K@163.com">Elijah_K@163.com</a>.</p>
