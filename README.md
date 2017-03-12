@@ -1,5 +1,5 @@
 # EasyUpload
-Easy Upload provides an easy way to upload multifile asynchronously. 
+Easy Upload is a Javascript plugin provides an easy way to upload multifile asynchronously. 
 <p>
 A File object is a specific kind of a Blob, and can be used in any context that a Blob can. 
 So we can use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob/slice">Blob.slice()</a> to cut a file into to individual slices, and post to server one by one. This makes it possible to upload large files.
@@ -83,4 +83,4 @@ For instance:
 </p>
 
 <h2>Multifile</h2>
-<p>This part is a little complex, and we will introduce it later...</p>
+<p>Multifile is based on <strong><i>upload</i></strong> and provides the functionality to upload multifile file asynchronously.</p>
